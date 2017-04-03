@@ -98,7 +98,8 @@ def k_shortest_paths_multi(G, source_names, target_names, npaths=20):
             try:
                 sp_list=k_shortest_paths(g,s,t,npaths)
                 for path in sp_list:
-                    all_shortest_paths.append(path)
+                    if len(path) > 1:  # Only include paths that are not self-referencing paths
+                        all_shortest_paths.append(path)
 
             except Exception as inst:
                 print "exception in shortest paths: " + str(inst)
