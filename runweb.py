@@ -13,6 +13,7 @@ import logs
 from ndex.networkn import NdexGraph
 from copy import deepcopy
 from causal_paths.src.path_scoring import EdgeRanking
+from causal_paths import preference_schedule_ini
 
 api = Bottle()
 
@@ -116,7 +117,7 @@ def find_directed_path_directed_post():
 
 @api.get('/getPreferenceSchedule')
 def get_preference_schedule():
-    edgeRanking = EdgeRanking()
+    edgeRanking = EdgeRanking(preference_schedule_ini)
     return_dict = edgeRanking.get_nice_preference_schedule()
 
     return dict(data=return_dict)

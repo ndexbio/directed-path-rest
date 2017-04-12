@@ -6,6 +6,7 @@ import ndex.beta.toolbox as toolbox
 import causal_utilities as cu
 from copy import deepcopy
 from path_scoring import PathScoring, EdgeRanking
+from causal_paths import preference_schedule_ini
 
 class DirectedPaths:
 
@@ -46,7 +47,7 @@ class DirectedPaths:
         important_nodes = [item for sublist in F for item in sublist]
 
         H = G.subgraph(important_nodes)
-        edge_ranking = EdgeRanking()
+        edge_ranking = EdgeRanking(preference_schedule_ini)
 
         for source in H.edge:
             H[source]

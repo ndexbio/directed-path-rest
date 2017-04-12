@@ -1,4 +1,5 @@
 from enum import Enum
+from causal_paths import preference_schedule_ini
 
 class PathScoring():
     def __init__(self):
@@ -84,7 +85,7 @@ class PathScoring():
         :return:
         :rtype:
         '''
-        edge_ranking = EdgeRanking()
+        edge_ranking = EdgeRanking(preference_schedule_ini)
         path_tuples = []
         for i, multi_edges in enumerate(p):
             if i % 2 != 0:  # Odd elements are edges
@@ -108,12 +109,8 @@ class PathScoring():
                     else:
                         print "!!!!! NEW EDGE TYPE NOT IN PREFERENCE SCHEDULE !!!!!"
                         print top_edge.get("interaction")
-                        path_tuples.append((prefix + str(i), 9))
+                        path_tuples.append((prefix + str(i), 9)) # default unknown edge type to the lowest impact
 
-                    #print multi_edges
-                    #print edge_ranking.edge_type_rank[top_edge.get("interaction")]
-
-        #print path_tuples
         return path_tuples
 
     #==============================================
@@ -124,64 +121,78 @@ class PathScoring():
     def convert_edge_dict_to_array(self, edge):
         tmp_edge_list = []
         for e in edge.keys():
-
             tmp_edge_list.append(edge[e])
 
         return tmp_edge_list
 
 class EdgeRanking:
-    def __init__(self):
+    def __init__(self, class_rank = None):
         self.edge_types = []
         self.nice_preference_schedule = {}
 
-        self.edge_class_rank = {
-            EdgeEnum.specific_protein_protein: [  # 1
-                "controls-transport-of",
-                "controls-phosphorylation-of",
-                "Phosphorylation",
-                "Dephosphorylation",
-                "controls-transport-of-chemical",
-                "consumption-controled-by",
-                "controls-production-of",
-                "Ubiquitination",
-                "Deubiquitination",
-                "ActivityActivity",
-                "RasGef"
-            ],
-            EdgeEnum.unspecified_activation_inhibition: [  # 2
-                "Activation",
-                "Inhibition"
-            ],
-            EdgeEnum.unspecified_state_control: [  # 3
-                "controls-state-change-of",
-                "chemical-affects"
-            ],
-            EdgeEnum.unspecified_direct: [  # 4
-                "reacts-with",
-                "used-to-produce"
-            ],
-            EdgeEnum.transcriptional_control: [  # 5
-                "controls-expression-of",
-                "Acetylation",
-                "Deacetylation",
-                "Sumoylation",
-                "Ribosylation",
-                "Deribosylation"
-            ],
-            EdgeEnum.proteins_catalysis_lsmr: [  # 6
-                "catalysis-precedes"
-            ],
-            EdgeEnum.specific_protein_protein_undirected: [  # 7
-                "in-complex-with",
-                "Complex"
-            ],
-            EdgeEnum.non_specific_protein_protein_undirected: [  # 8
-                "interacts-with"
-            ],
-            EdgeEnum.unspecified_topological:[  # 9
-                "neighbor-of"
-            ]
-        }
+        if class_rank is not None:
+            self.edge_class_rank = {
+                EdgeEnum.specific_protein_protein: class_rank.get("level1"),
+                EdgeEnum.unspecified_activation_inhibition: class_rank.get("level2"),
+                EdgeEnum.unspecified_state_control: class_rank.get("level3"),
+                EdgeEnum.unspecified_direct: class_rank.get("level4"),
+                EdgeEnum.transcriptional_control: class_rank.get("level5"),
+                EdgeEnum.proteins_catalysis_lsmr: class_rank.get("level6"),
+                EdgeEnum.specific_protein_protein_undirected: class_rank.get("level7"),
+                EdgeEnum.non_specific_protein_protein_undirected: class_rank.get("level8"),
+                EdgeEnum.unspecified_topological:class_rank.get("level9")
+            }
+        else:
+            self.edge_class_rank = {
+                EdgeEnum.specific_protein_protein: [  # 1
+                    "controls-transport-of",
+                    "controls-phosphorylation-of",
+                    "Phosphorylation",
+                    "Dephosphorylation",
+                    "controls-transport-of-chemical",
+                    "consumption-controled-by",
+                    "controls-production-of",
+                    "Ubiquitination",
+                    "Deubiquitination",
+                    "ActivityActivity",
+                    "RasGef"
+                ],
+                EdgeEnum.unspecified_activation_inhibition: [  # 2
+                    "Activation",
+                    "Inhibition"
+                ],
+                EdgeEnum.unspecified_state_control: [  # 3
+                    "controls-state-change-of",
+                    "chemical-affects"
+                ],
+                EdgeEnum.unspecified_direct: [  # 4
+                    "reacts-with",
+                    "used-to-produce"
+                ],
+                EdgeEnum.transcriptional_control: [  # 5
+                    "controls-expression-of",
+                    "Acetylation",
+                    "Deacetylation",
+                    "Sumoylation",
+                    "Ribosylation",
+                    "Deribosylation"
+                ],
+                EdgeEnum.proteins_catalysis_lsmr: [  # 6
+                    "catalysis-precedes"
+                ],
+                EdgeEnum.specific_protein_protein_undirected: [  # 7
+                    "in-complex-with",
+                    "Complex"
+                ],
+                EdgeEnum.non_specific_protein_protein_undirected: [  # 8
+                    "interacts-with"
+                ],
+                EdgeEnum.unspecified_topological:[  # 9
+                    "neighbor-of"
+                ]
+            }
+
+        #print self.edge_class_rank
 
         #===============================================
         # Generates a dict based on edge_class_rank
