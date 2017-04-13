@@ -3,14 +3,11 @@ directed-path-rest
 
 REST service for finding directed paths in a reference network.
 
-**BOLD**
-
-
 ## REST API
 
 **Directed path search**
 ----
-  Returns json data .
+  Returns a set of forward paths in [NodeId, NodeId, NodeId] format as well as [NodeLabel,EdgesInBetween,NextNodeLabel] format.  Also returns a subnetwork comprised of the found paths.
 
 * **URL**
 
@@ -25,9 +22,13 @@ REST service for finding directed paths in a reference network.
    **Required:**
  
    `uuid=[NDEx network identifier]`
+   
    `server=[NDEx server host name]`
+   
    `source=[comma delimited string of source nodes]`
+   
    `target=[comma delimited string of target nodes]`
+   
    
    **Optional:**
    
@@ -43,11 +44,6 @@ REST service for finding directed paths in a reference network.
     **Content:** `{"data": {"forward": [[19,65,193],[39, 47, 66]],...}}`
  
 * **Error Response:**
-
-  * **Code:** 404 NOT FOUND <br />
-    **Content:** `{ error : "User doesn't exist" }`
-
-  OR
 
   * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ message : "Missing source list in query string." }`
