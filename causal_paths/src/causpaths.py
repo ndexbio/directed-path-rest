@@ -18,32 +18,24 @@ class DirectedPaths:
         self.ref_networks = {}
 
     def findDirectedPaths(self, network_cx, original_edge_map, source_list, target_list, uuid=None, server=None, npaths=20, relation_type=None):
-        if(uuid is not None):
-            G = self.get_reference_network(uuid, server)
-        else:
-            if type(network_cx) is NdexGraph:
-                G = network_cx
-            else:
-                G = NdexGraph(cx=network_cx)
+        self.original_edge_map = deepcopy(network_cx.edge)
 
-        self.original_edge_map = deepcopy(G.edge)
+        F, R, G_prime = cu.get_source_target_network(network_cx, original_edge_map, source_list, target_list, "Title placeholder", npaths=npaths, relation_type=relation_type)
 
-        F, R, G_prime = cu.get_source_target_network(G, original_edge_map, source_list, target_list, "Title placeholder", npaths=npaths, relation_type=relation_type)
+        complete_forward_list = self.reattach_path_edges(F, network_cx, G_prime)  # TODO check efficiency of this call
+        complete_reverse_list = self.reattach_path_edges(R, network_cx, G_prime)  # TODO check efficiency of this call
 
-        complete_forward_list = self.reattach_edges(F, G, G_prime)  # TODO check efficiency of this call
-        complete_reverse_list = self.reattach_edges(R, G, G_prime)  # TODO check efficiency of this call
+        subnet = self.reattach_subnet_edges(F, network_cx)
 
-        subnet = self.reattach_original_edges(F, G)
-
-        G = None
+        network_cx = None
 
         # Apply a cytoscape style from a template network
         template_id = '07762c7e-6193-11e5-8ac5-06603eb7f303'
         toolbox.apply_template(G_prime, template_id)
 
-        return {'forward': F, 'forward_english': complete_forward_list, 'reverse_english': complete_reverse_list, 'reverse': R, 'network': subnet.to_cx()} #P1.get('network').to_cx()}
+        return {'forward': F, 'forward_english': complete_forward_list, 'reverse_english': complete_reverse_list, 'reverse': R, 'network': subnet.to_cx()}
 
-    def reattach_original_edges(self, F, G):
+    def reattach_subnet_edges(self, F, G):
         important_nodes = [item for sublist in F for item in sublist]
 
         H = G.subgraph(important_nodes)
@@ -68,16 +60,7 @@ class DirectedPaths:
 
         return H
 
-    def get_reference_network(self, uuid, host):
-        if self.ref_networks.get(uuid) is None:
-            G = NdexGraph(server=host, uuid=uuid)
-            self.ref_networks[uuid] = G
-        else:
-            print "INFO: using cached network."
-
-        return deepcopy(self.ref_networks.get(uuid))
-
-    def reattach_edges(self, n_list, G, G_prime):
+    def reattach_path_edges(self, n_list, G, G_prime):
         result_list = []
         for f in n_list:
             inner = []

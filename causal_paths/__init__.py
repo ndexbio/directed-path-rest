@@ -7,8 +7,14 @@ root = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
 Config.read("config.ini")
 
+#===================================
+# Process the two way edge types
+#===================================
 two_way_edges  = Config.get("EdgeClasses", "TwoWayEdges").split(",")
 
+#===================================
+# Process the preference schedule
+#===================================
 preference_schedule_ini = {}
 prefs = Config.options("PreferenceSchedule")
 for option in prefs:

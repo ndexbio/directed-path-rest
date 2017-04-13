@@ -22,9 +22,9 @@ log = logs.get_logger('api')
 root = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 ref_networks = {}
 
-@api.get('/hello/<name>')
-def index(name):
-    return template('<b>Hello {{name}}</b>!', name=name)
+@api.get('/statuscheck')
+def index():
+    return "<b>Service is up and running</b>!"
 
 @api.post('/directedpath/query')
 def find_directed_path_directed_post():
@@ -37,7 +37,7 @@ def find_directed_path_directed_post():
 
     #============================
     # VERIFY FILE CAN BE PARSED
-    # OR UUID IS SUPPLIED
+    # OR UUID WAS SUPPLIED
     #============================
     if('uuid' in query_string.keys() and len(query_string['uuid']) > 0):
         if('server' in query_string.keys() and len(query_string['server']) > 0):
@@ -108,9 +108,9 @@ def find_directed_path_directed_post():
 
     if('relationtypes' in query_string.keys() and len(query_string['relationtypes']) > 0):
         relation_types = query_string['relationtypes'].split()
-        return_paths = directedPaths.findDirectedPaths(network, original_edge_map, source, target, uuid=uuid, server=server, npaths=pathnum, relation_type=relation_types)
+        return_paths = directedPaths.findDirectedPaths(network, original_edge_map, source, target, npaths=pathnum, relation_type=relation_types)
     else:
-        return_paths = directedPaths.findDirectedPaths(network, original_edge_map, source, target, uuid=uuid, server=server, npaths=pathnum)
+        return_paths = directedPaths.findDirectedPaths(network, original_edge_map, source, target, npaths=pathnum)
     directedPaths = None
     result = dict(data=return_paths)
     return result
