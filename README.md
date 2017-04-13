@@ -48,3 +48,37 @@ REST service for finding directed paths in a reference network.
   * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ message : "Missing source list in query string." }`
 
+
+
+**Get preference schedule**
+----
+  Returns the current preference schedule of edge types
+
+* **URL**
+
+  /getPreferenceSchedule
+
+* **Method:**
+
+  `GET`
+  
+*  **URL Params**
+
+   **Required:**
+ 
+  None
+   
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** `{"data": {"1": ["controls-phosphorylation-of"], "2": ["reacts-with"],...}}`
+ 
+* **Error Response:**
+
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** `{"message" : "preference schedule not set" }`
+
