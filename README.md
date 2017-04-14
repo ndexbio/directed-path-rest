@@ -64,8 +64,6 @@ REST service for finding directed paths in a reference network.
   
 *  **URL Params**
 
-   **Required:**
- 
   None
    
 * **Data Params**
@@ -82,3 +80,16 @@ REST service for finding directed paths in a reference network.
   * **Code:** 404 NOT FOUND <br />
     **Content:** `{"message" : "preference schedule not set" }`
 
+**Code breakdown**
+----
+The code is organized into the following classes:
+
+*  **DirectedPaths**
+
+*  **PathScoring**
+
+*  **EdgeRanking**
+
+Also the following utility file:
+
+*  **causal_utilities**
