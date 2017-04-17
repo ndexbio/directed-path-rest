@@ -76,7 +76,7 @@ REST service for finding directed paths in a reference network.
 
 **Code breakdown**
 ----
-The code is organized into the following classes and one utility file:
+The code is organized into the following three classes, one utility file and a REST api:
 
 *  **DirectedPaths**
 
@@ -95,7 +95,7 @@ The code is organized into the following classes and one utility file:
 
     
 
-*  **causal_utilities**
+*  **causal_utilities (utility file)**
     
     Contains method for:
      
@@ -105,7 +105,13 @@ The code is organized into the following classes and one utility file:
     
     shortest path finding - `k_shortest_paths_multi()`
     
-    assembling from a set of paths - `network_from_paths`
+    assembling a network from a set of paths - `network_from_paths`
     
+
+    
+
+*  **runweb (REST api)**
+    
+    Contains REST api:
     
     

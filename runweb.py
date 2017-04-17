@@ -126,13 +126,6 @@ def get_reference_network(uuid, host):
     if ref_networks.get(uuid) is None:
         G = NdexGraph(server=host, uuid=uuid)
 
-        # =====================================================================
-        # Filter edges by type.  The following call to indra_causality() will
-        # only contain filtered edges and may not add any reverse edges
-        # =====================================================================
-
-        #cu.indra_causality(G, two_way_edges)
-
         ref_networks[uuid] = G
     else:
         print "INFO: using cached network."
