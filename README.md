@@ -76,7 +76,7 @@ REST service for finding directed paths in a reference network.
 
 **Code breakdown**
 ----
-The code is organized into the following classes:
+The code is organized into the following classes and one utility file:
 
 *  **DirectedPaths**
 
@@ -90,9 +90,22 @@ The code is organized into the following classes:
 
 
 *  **EdgeRanking**
+    
     Contains the preference schedule for ranking edge types
 
     
-    and one utility file:
 
-*  **causal_utilities**1
+*  **causal_utilities**
+    
+    Contains method for:
+     
+    processing two way edge types - `indra_causality()`
+    
+    filtering edge types - `filter_edges()`
+    
+    shortest path finding - `k_shortest_paths_multi()`
+    
+    assembling from a set of paths - `network_from_paths`
+    
+    
+    
