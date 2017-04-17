@@ -136,7 +136,7 @@ def get_reference_network(uuid, host):
 def main():
     status = 0
     parser = argparse.ArgumentParser()
-    parser.add_argument('port', nargs='?', type=int, help='HTTP port', default=80)
+    parser.add_argument('port', nargs='?', type=int, help='HTTP port', default=5603)
     args = parser.parse_args()
 
     print 'starting web server on port %s' % args.port

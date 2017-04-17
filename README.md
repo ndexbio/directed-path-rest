@@ -49,6 +49,11 @@ REST service for finding directed paths in a reference network.
     **Content:** `{ message : "Missing source list in query string." }`
 
 
+* **Example:**
+
+  * **POST URL:** `http://general.bigmech.ndexbio.org:5603/directedpath/query?source=MAP2K5,KRAS,MYC,BRAF&target=MAPK7,ERK&pathnum=15&uuid=76ce8073-002a-11e6-b550-06603eb7f303&server=public.ndexbio.org`
+
+
 
 **Get preference schedule**
 ----
@@ -105,7 +110,7 @@ The code is organized into the following three classes, one utility file and a R
     
     shortest path finding - `k_shortest_paths_multi()`
     
-    assembling a network from a set of paths - `network_from_paths`
+    assembling a network from a set of paths - `network_from_paths()`
     
 
     
