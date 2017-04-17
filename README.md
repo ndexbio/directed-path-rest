@@ -55,28 +55,22 @@ REST service for finding directed paths in a reference network.
   Returns the current preference schedule of edge types
 
 * **URL**
-
-  /getPreferenceSchedule
+    /getPreferenceSchedule
 
 * **Method:**
-
-  `GET`
+    `GET`
   
 *  **URL Params**
-
-  None
+    None
    
 * **Data Params**
-
-  None
+    None
 
 * **Success Response:**
-
   * **Code:** 200 <br />
     **Content:** `{"data": {"1": ["controls-phosphorylation-of"], "2": ["reacts-with"],...}}`
  
 * **Error Response:**
-
   * **Code:** 404 NOT FOUND <br />
     **Content:** `{"message" : "preference schedule not set" }`
 
@@ -86,10 +80,19 @@ The code is organized into the following classes:
 
 *  **DirectedPaths**
 
+    Responsible for processing the reference network and assembling the forward and reverse paths as well as the resulting subnetwork.
+
 *  **PathScoring**
 
+    Contains a nonparametric sorting algorithm that can be passed to a lambda expression for sorting
+    
+    For example: sorted(results_list, lambda x,y: path_scoring.cross_country_scoring(x, y))
+
+
 *  **EdgeRanking**
+    Contains the preference schedule for ranking edge types
 
-Also the following utility file:
+    
+    and one utility file:
 
-*  **causal_utilities**
+*  **causal_utilities**1

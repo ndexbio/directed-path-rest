@@ -18,8 +18,6 @@ class DirectedPaths:
         self.ref_networks = {}
 
     def findDirectedPaths(self, network_cx, original_edge_map, source_list, target_list, uuid=None, server=None, npaths=20, relation_type=None):
-        self.original_edge_map = deepcopy(network_cx.edge)
-
         F, R, G_prime = cu.get_source_target_network(network_cx, original_edge_map, source_list, target_list, "Title placeholder", npaths=npaths, relation_type=relation_type)
 
         complete_forward_list = self.reattach_path_edges(F, network_cx, G_prime)  # TODO check efficiency of this call

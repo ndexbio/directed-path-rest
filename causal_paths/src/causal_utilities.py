@@ -22,9 +22,6 @@ def get_source_target_network(reference_network, original_edge_map, source_names
 
     indra_causality(reference_network, two_way_edges)
 
-    #indra_causality(reference_network, two_way_edgetypes)
-    #TODO filter edges based on relation type
-
     source_ids=get_node_ids_by_names(reference_network, source_names)
     target_ids=get_node_ids_by_names(reference_network, target_names)
 
