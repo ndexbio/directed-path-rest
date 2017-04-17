@@ -86,7 +86,7 @@ The code is organized into the following classes:
 
     Contains a nonparametric sorting algorithm that can be passed to a lambda expression for sorting
     
-    For example: sorted(results_list, lambda x,y: path_scoring.cross_country_scoring(x, y))
+    For example: `sorted(results_list, lambda x,y: path_scoring.cross_country_scoring(x, y))`
 
 
 *  **EdgeRanking**
