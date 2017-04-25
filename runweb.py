@@ -14,6 +14,7 @@ from ndex.networkn import NdexGraph
 from copy import deepcopy
 from causal_paths.src.path_scoring import EdgeRanking
 from causal_paths import preference_schedule_ini
+from gain import hash_network
 
 api = Bottle()
 
@@ -25,6 +26,12 @@ ref_networks = {}
 @api.get('/statuscheck')
 def index():
     return "<b>Service is up and running</b>!"
+
+@api.get('/ontologysub/<uuid>/query/<nodeId>')
+def get_ontology_sub_id(uuid, nodeId):
+    sub_id = hash_network.get_ontology_sub_network(uuid, nodeId)
+
+    return dict(data=sub_id)
 
 @api.post('/directedpath/query')
 def find_directed_path_directed_post():
