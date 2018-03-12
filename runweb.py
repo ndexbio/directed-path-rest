@@ -38,8 +38,10 @@ def find_directed_path_directed_post():
     uuid = None
     server = None
     network = None
+    pref_schedule = None
     original_edge_map = None
     data = request.files.get('network_cx')
+    pref = request.files.get('pref_schedule')
     query_string = dict(request.query)
 
     #============================
@@ -74,6 +76,15 @@ def find_directed_path_directed_post():
             response.status = 400
             response.content_type = 'application/json'
             return json.dumps({'message': 'Valid CX/JSON file not found and uuid not supplied.'})
+
+    if pref and pref.file:
+        try:
+            read_file = pref.file.read()
+            pref_schedule = json.loads(read_file)
+        except Exception as e:
+            response.status = 400
+            response.content_type = 'application/json'
+            return json.dumps({'message': 'Preference schedule is not valid CX/JSON. Error --> ' + e.message})
 
     #==================================
     # VERIFY SOURCE NODES ARE PRESENT
@@ -115,9 +126,11 @@ def find_directed_path_directed_post():
 
     if('relationtypes' in query_string.keys() and len(query_string['relationtypes']) > 0):
         relation_types = query_string['relationtypes'].split()
-        return_paths = directedPaths.findDirectedPaths(network, original_edge_map, source, target, npaths=pathnum, relation_type=relation_types)
+        return_paths = directedPaths.findDirectedPaths(network, original_edge_map, source, target, npaths=pathnum,
+                                                       relation_type=relation_types, pref_schedule=pref_schedule)
     else:
-        return_paths = directedPaths.findDirectedPaths(network, original_edge_map, source, target, npaths=pathnum)
+        return_paths = directedPaths.findDirectedPaths(network, original_edge_map, source, target, npaths=pathnum,
+                                                       pref_schedule=pref_schedule)
     directedPaths = None
     result = dict(data=return_paths)
     return result

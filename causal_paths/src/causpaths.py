@@ -17,11 +17,12 @@ class DirectedPaths:
 
         self.ref_networks = {}
 
-    def findDirectedPaths(self, network_cx, original_edge_map, source_list, target_list, uuid=None, server=None, npaths=20, relation_type=None):
+    def findDirectedPaths(self, network_cx, original_edge_map, source_list, target_list, uuid=None, server=None,
+                          npaths=20, relation_type=None, pref_schedule=None):
         F, R, G_prime = cu.get_source_target_network(network_cx, original_edge_map, source_list, target_list, "Title placeholder", npaths=npaths, relation_type=relation_type)
 
-        complete_forward_list = self.reattach_path_edges(F, network_cx, G_prime)  # TODO check efficiency of this call
-        complete_reverse_list = self.reattach_path_edges(R, network_cx, G_prime)  # TODO check efficiency of this call
+        complete_forward_list = self.reattach_path_edges(F, network_cx, G_prime, pref_schedule=pref_schedule)  # TODO check efficiency of this call
+        complete_reverse_list = self.reattach_path_edges(R, network_cx, G_prime, pref_schedule=pref_schedule)  # TODO check efficiency of this call
 
         subnet = self.reattach_subnet_edges(F, network_cx)
 
@@ -58,7 +59,7 @@ class DirectedPaths:
 
         return H
 
-    def reattach_path_edges(self, n_list, G, G_prime):
+    def reattach_path_edges(self, n_list, G, G_prime, pref_schedule=None):
         result_list = []
         for f in n_list:
             inner = []
@@ -98,7 +99,7 @@ class DirectedPaths:
             print "error ranking paths"
             print e.message
 
-        path_scoring = PathScoring()
+        path_scoring = PathScoring(pref_schedule=pref_schedule)
 
         results_list_sorted = sorted(results_list, lambda x, y: path_scoring.cross_country_scoring(x, y))
 

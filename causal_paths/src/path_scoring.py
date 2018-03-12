@@ -2,7 +2,13 @@ from enum import Enum
 from causal_paths import preference_schedule_ini
 
 class PathScoring():
-    def __init__(self):
+    edge_ranking = None
+    def __init__(self, pref_schedule=None):
+        if pref_schedule is not None:
+            self.edge_ranking = EdgeRanking(pref_schedule)
+        else:
+            self.edge_ranking = EdgeRanking(preference_schedule_ini)
+
         self.mystr = ""
 
     def cross_country_scoring(self, A, B):
@@ -101,11 +107,11 @@ class PathScoring():
                         if top_edge is None:
                             top_edge = edge
                         else:
-                            if edge_ranking.edge_type_rank[edge.get("interaction")] < edge_ranking.edge_type_rank[top_edge.get("interaction")]:
+                            if self.edge_ranking.edge_type_rank[edge.get("interaction")] < self.edge_ranking.edge_type_rank[top_edge.get("interaction")]:
                                 top_edge = edge
 
-                    if edge_ranking.edge_type_rank.get(top_edge.get("interaction")) is not None:
-                        path_tuples.append((prefix + str(i), edge_ranking.edge_type_rank[top_edge.get("interaction")]))
+                    if self.edge_ranking.edge_type_rank.get(top_edge.get("interaction")) is not None:
+                        path_tuples.append((prefix + str(i), self.edge_ranking.edge_type_rank[top_edge.get("interaction")]))
                     else:
                         print "!!!!! NEW EDGE TYPE NOT IN PREFERENCE SCHEDULE !!!!!"
                         print top_edge.get("interaction")
@@ -126,7 +132,7 @@ class PathScoring():
         return tmp_edge_list
 
 class EdgeRanking:
-    def __init__(self, class_rank = None):
+    def __init__(self, class_rank=None):
         self.edge_types = []
         self.nice_preference_schedule = {}
 
