@@ -161,11 +161,13 @@ class EdgeRanking:
                     "Ubiquitination",
                     "Deubiquitination",
                     "ActivityActivity",
-                    "RasGef"
+                    "Gef",
+                    "Gap"
                 ],
                 EdgeEnum.unspecified_activation_inhibition: [  # 2
                     "Activation",
-                    "Inhibition"
+                    "Inhibition",
+                    "GtpActivation"
                 ],
                 EdgeEnum.unspecified_state_control: [  # 3
                     "controls-state-change-of",
@@ -177,6 +179,8 @@ class EdgeRanking:
                 ],
                 EdgeEnum.transcriptional_control: [  # 5
                     "controls-expression-of",
+                    "IncreaseAmount",
+                    "DecreaseAmount",
                     "Acetylation",
                     "Deacetylation",
                     "Sumoylation",
