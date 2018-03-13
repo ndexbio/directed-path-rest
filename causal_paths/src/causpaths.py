@@ -52,6 +52,17 @@ class DirectedPaths:
                     if top_edge is None:
                         top_edge = H[source][target][edge]
                     else:
+                        edge_rank_a = edge_ranking.edge_type_rank.get(H[source][target][edge].get("interaction"))
+                        edge_rank_b = edge_ranking.edge_type_rank.get(top_edge.get("interaction"))
+
+                        if edge_rank_a is None:
+                            edge_ranking.edge_type_rank[H[source][target][edge].get("interaction")] = 9
+                            print(H[source][target][edge].get("interaction") + ' had no ranking.  Please add to pref schedule')
+
+                        if edge_rank_b is None:
+                            edge_ranking.edge_type_rank[top_edge.get("interaction")] = 9
+                            print(top_edge.get("interaction") + ' had no ranking.  Please add to pref schedule')
+
                         if edge_ranking.edge_type_rank[H[source][target][edge].get("interaction")] < edge_ranking.edge_type_rank[top_edge.get("interaction")]:
                             top_edge = H[source][target][edge]
 

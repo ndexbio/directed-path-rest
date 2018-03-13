@@ -91,7 +91,7 @@ class PathScoring():
         :return:
         :rtype:
         '''
-        edge_ranking = EdgeRanking(preference_schedule_ini)
+        self.edge_ranking = EdgeRanking(preference_schedule_ini)
         path_tuples = []
         for i, multi_edges in enumerate(p):
             if i % 2 != 0:  # Odd elements are edges
@@ -107,7 +107,19 @@ class PathScoring():
                         if top_edge is None:
                             top_edge = edge
                         else:
-                            if self.edge_ranking.edge_type_rank[edge.get("interaction")] < self.edge_ranking.edge_type_rank[top_edge.get("interaction")]:
+                            edge_rank_a = self.edge_ranking.edge_type_rank.get(str(edge.get("interaction")))
+                            edge_rank_b = self.edge_ranking.edge_type_rank.get(str(top_edge.get("interaction")))
+
+                            if edge_rank_a is None:
+                                self.edge_ranking.edge_type_rank[str(edge.get("interaction"))] = 9
+                                print(edge.get(
+                                    "interaction") + ' had no ranking.  Please add to pref schedule')
+
+                            if edge_rank_b is None:
+                                self.edge_ranking.edge_type_rank[str(top_edge.get("interaction"))] = 9
+                                print(top_edge.get("interaction") + ' had no ranking.  Please add to pref schedule')
+
+                            if self.edge_ranking.edge_type_rank[str(edge.get("interaction"))] < self.edge_ranking.edge_type_rank[str(top_edge.get("interaction"))]:
                                 top_edge = edge
 
                     if self.edge_ranking.edge_type_rank.get(top_edge.get("interaction")) is not None:
